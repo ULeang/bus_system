@@ -66,7 +66,12 @@ private:
 	bool admin;//管理员权限
 
 public:
-	bus_system(const char* str = "bus_system.txt", bool ad = false);//str为站点线路txt文件，默认存储及读取位置为bus_system.txt
+	bus_system(const std::string& str = "bus_system.txt", bool ad = false) :file_name(str)
+	{
+		get_stop_name_list();
+		creat_line_list();
+		creat_stop_list();
+	}//str为站点线路txt文件，默认存储及读取位置为bus_system.txt
 
 public:
 	bool menu();//显示主菜单
@@ -88,7 +93,7 @@ private:
 	std::string get_stop_name(int sub)const;//返回下标sub对应的站点名
 	std::string get_line_name(int sub)const;//返回下标sub对应的路线名
 
-	const char* file_name;
+	const std::string file_name;
 	std::vector<std::string>stop_name_list;
 	bool get_stop_name_list();
 	bool creat_line_list();

@@ -17,13 +17,13 @@ bool bus_system::get_stop_name_list()
 		return 1;
 	}
 	string temp;
-	char* p_flush = new char[256];
+	string p_flush ;
 	while (!bus_data_file.eof())
 	{
 		bus_data_file >> temp;
 		if (temp == "#")
 		{
-			bus_data_file.getline(p_flush, 256);
+			getline(bus_data_file, p_flush);
 			if (bus_data_file.eof())
 			{
 				break;
@@ -41,8 +41,6 @@ bool bus_system::get_stop_name_list()
 			}
 		}
 	}
-	delete[] p_flush;
-	p_flush = NULL;
 	bus_data_file.close();//获取所有站点名称
 	return 0;
 }
@@ -147,11 +145,10 @@ bool bus_system::creat_line_list()
 		bus_line::time first_temp(first_time_1, first_time_2);
 		bus_line::time last_temp(last_time_1, last_time_2);
 		bus_line Temp(line_name, stop_number, estimated_time, first_temp, last_temp);
-		char* p_flush = new char[256];
-		bus_data_file.getline(p_flush, 256);
-		delete[] p_flush;
-		p_flush = NULL;
+		string p;
+		getline(bus_data_file, p);
 		line_list.push_back(Temp);
+		bus_data_file.get();
 	}
 	bus_data_file.close();
 	return 0;
@@ -183,17 +180,11 @@ bool bus_system::write_bus_line(ofstream& file, bus_line line)
 {
 	file << line.name + " ";
 	for (int i = 0; i < line.line.size(); i++)
-		file << stop_list[line.line[i]].name + " ";
+		file << stop_name_list[line.line[i]] + " ";
 	file << "# " << line.first.hour << ":" << line.first.minute << " " << line.last.hour << ":" << line.last.minute << " #\n";
 	return 0;
 }
-bus_system::bus_system(const char* str, bool ad)
-{
-	file_name = str;
-	get_stop_name_list();
-	creat_line_list();
-	creat_stop_list();
-}
+
 bus_system::bus_line bus_system::read_string_to_bus_line_add(const string& li)
 {
 	vector<string> temp_list;
@@ -356,7 +347,7 @@ bool bus_system::line_add(const string& li)
 	line_list.push_back(read_string_to_bus_line_add(li));
 	ofstream data_bus_file;
 	data_bus_file.open(file_name, ios::app);
-	write_bus_line(data_bus_file, line_list[line_list.size()]);
+	write_bus_line(data_bus_file, line_list[line_list.size()-1]);
 	data_bus_file.close();
 	stop_update();
 	return 0;

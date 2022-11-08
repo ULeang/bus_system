@@ -94,7 +94,8 @@ bool bus_system::menu()
 					{
 						std::string addli;
 						std::cout << "请输入新增线路" << std::endl;
-						std::getline(std::cin,addli) ;
+						getchar();
+						std::getline(std::cin, addli);
 						line_add(addli);
 					}
 					if (f == 2)
@@ -110,7 +111,7 @@ bool bus_system::menu()
 						int h;
 						std::string newli;
 						std::cin >> h;
-						std::getline(std::cin,newli);
+						std::getline(std::cin, newli);
 						line_update(h, newli);
 					}
 					if (f != 1 && f != 2 && f != 3)
