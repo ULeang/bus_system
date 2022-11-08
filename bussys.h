@@ -87,13 +87,13 @@ private:
 
 private:
 	//新成员函数放这里
-	int find_stop(const std::string& st)const;//返回站点st在内存中的下标，不存在则返回-1
-	int find_line(const std::string& li)const;//返回线路li在内存中的下标，不存在则返回-1
+	int get_stop_subscript(const std::string& st)const;//返回站点st在内存中的下标，不存在则返回-1
+	int get_line_subscript(const std::string& li)const;//返回线路li在内存中的下标，不存在则返回-1
 	bool find_end(int stn, int edn, All_line& all_line, Line& temp_line);//寻找从下标stn到edn的所有可能路线，追加到all_line末尾
 	int handle_transfer(const Line& li, int u = 0)const;//返回路线li从第u项开始的最小换乘数（贪心算法）
 	bool final_plan(const Line& li, std::string* str, int u = 0, bus_line::time ti = { 0,0 })const;//将路线li的最终乘车方案（贪心算法）追加到str末尾
-	std::string get_stop_name(int num)const;//返回序号num对应的站点名
-	int get_stop_subscript(int num)const;//返回序号num对应的站点下标
+	std::string get_stop_name(int sub)const;//返回下标sub对应的站点名
+	std::string get_line_name(int sub)const;//返回下标sub对应的路线名
 
 	std::vector<std::string> get_stop_name_list();
 	std::vector<bus_system::bus_line> creat_line_list(std::vector<std::string> stop_name_list);
