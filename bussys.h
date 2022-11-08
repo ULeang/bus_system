@@ -47,14 +47,13 @@ private:
 		};
 
 	public:
-		int number;//序号
 		std::string name;//线路名
-		std::vector<int> line;//所有站点序号
+		std::vector<int> line;//所有站点下标
 		std::vector<time> estimated_time;//两站点间预估时间
 		time first;//首班车时间
 		time last;//末班车时间
 
-		bus_line(int n, std::string na, std::vector<int> li, std::vector<time> et, time f, time l) :number(n), name(std::move(na)), line(std::move(li)), estimated_time(std::move(et)), first(f), last(l) {}
+		bus_line(std::string na, std::vector<int> li, std::vector<time> et, time f, time l) :name(std::move(na)), line(std::move(li)), estimated_time(std::move(et)), first(f), last(l) {}
 
 		unsigned line_check(const Line& li, time& t, unsigned u = 0)const;//给定某一线路li，返回该线路从第u个站点开始的前n个站点位于本线路中，将时间存入t中
 	};
