@@ -159,15 +159,15 @@ bool bus_system::find_end(int stn, int edn, All_line& all_line, Line& temp_line)
 
 int bus_system::handle_transfer(const Line& li, int u) const
 {
-	int max_stop = 0, stop_num = 0;
+	int max_stop_num = -1, stop_num = 0;
 	bus_line::time ti;
 	for (int i = 0; i < line_list.size(); ++i)
-		if ((stop_num = line_list[i].line_check(li, ti, u)) > max_stop)
-			max_stop = stop_num;
-	if (u + max_stop == li.size())
+		if ((stop_num = line_list[i].line_check(li, ti, u)) > max_stop_num)
+			max_stop_num = stop_num;
+	if (u + max_stop_num == li.size())
 		return 1;
 	else
-		return 1 + handle_transfer(li, u + max_stop - 1);
+		return 1 + handle_transfer(li, u + max_stop_num - 1);
 }
 
 bool bus_system::final_plan(const Line& li, std::string* str, int u, bus_line::time ti) const
