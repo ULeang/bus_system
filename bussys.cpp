@@ -85,7 +85,7 @@ int bus_system::line_query(const std::string& start, const std::string& end, std
 bool bus_system::line_showsingle(const std::string& li, std::string* str) const
 {
 	int lin = get_line_subscript(li);
-	if (lin < 0)
+	if (lin == -1)
 		return false;
 
 	*str = li + ":";
