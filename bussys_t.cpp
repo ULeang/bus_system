@@ -17,7 +17,7 @@ bool bus_system::get_stop_name_list()
 		return 1;
 	}
 	string temp;
-	string p_flush ;
+	string p_flush;
 	while (!bus_data_file.eof())
 	{
 		bus_data_file >> temp;
@@ -148,7 +148,6 @@ bool bus_system::creat_line_list()
 		string p;
 		getline(bus_data_file, p);
 		line_list.push_back(Temp);
-		bus_data_file.get();
 	}
 	bus_data_file.close();
 	return 0;
@@ -178,14 +177,20 @@ bool bus_system::creat_stop_list()
 }
 bool bus_system::write_bus_line(ofstream& file, bus_line line)
 {
-	file << line.name + " ";
+	file << "\n" + line.name + " ";
 	for (int i = 0; i < line.line.size(); i++)
+	{
 		file << stop_name_list[line.line[i]] + " ";
-	file << "# " << line.first.hour << ":" << line.first.minute << " " << line.last.hour << ":" << line.last.minute << " #\n";
+		if (i < line.estimated_time.size())
+		{
+			file<<60*(line.estimated_time[i].hour)+ line.estimated_time[i].minute<<" ";
+		}
+	}
+	file << "# " << line.first.hour << ":" << line.first.minute << " " << line.last.hour << ":" << line.last.minute << " #";
 	return 0;
 }
 
-bus_system::bus_line bus_system::read_string_to_bus_line_add(const string& li)
+bool bus_system::read_string_to_bus_line_add(const string& li, bus_line* &p)
 {
 	vector<string> temp_list;
 	string temp_string;
@@ -207,7 +212,7 @@ bus_system::bus_line bus_system::read_string_to_bus_line_add(const string& li)
 		stop_name_list.push_back(temp_list[i]);
 		for (int j = 0; j < stop_name_list.size() - 1; j++)//去除重复
 		{
-			if (temp_list[i] == stop_name_list[i])
+			if (temp_list[i] == stop_name_list[j])
 			{
 				stop_name_list.pop_back();
 				break;
@@ -219,6 +224,14 @@ bus_system::bus_line bus_system::read_string_to_bus_line_add(const string& li)
 	vector<int>stop_number;
 	vector<bus_line::time>estimated_time;
 	line_name = temp_list[n++];
+	for (int i = 0; i < line_list.size(); i++)
+	{
+		if (line_name == line_list[i].name)
+		{
+			cout << "存在重名现象，请重试" << endl;
+			return true;
+		}
+	}
 	string temp_time;
 	string temp_stop_name;
 	while (true)
@@ -299,14 +312,14 @@ bus_system::bus_line bus_system::read_string_to_bus_line_add(const string& li)
 	}
 	bus_line::time first_temp(first_time_1, first_time_2);
 	bus_line::time last_temp(last_time_1, last_time_2);
-	bus_line Temp(line_name, stop_number, estimated_time, first_temp, last_temp);
-	return Temp;
+	p = new bus_line(line_name, stop_number, estimated_time, first_temp, last_temp);
+	return false;
 }
 bool bus_system::line_delete(unsigned u)
 {
-	if (u <= line_list.size())
+	if (u < line_list.size())
 	{
-		vector<bus_line>::iterator it = line_list.begin() + u - 1;
+		vector<bus_line>::iterator it = line_list.begin() + u ;
 		line_list.erase(it);
 	}
 	else
@@ -315,7 +328,7 @@ bool bus_system::line_delete(unsigned u)
 		return 1;
 	}
 	ofstream bus_data_file;
-	bus_data_file.open("srt", ios::out);
+	bus_data_file.open(file_name, ios::out);//|ios::trunc
 	for (int i = 0; i < line_list.size(); i++)
 	{
 		write_bus_line(bus_data_file, line_list[i]);
@@ -326,13 +339,20 @@ bool bus_system::line_delete(unsigned u)
 }
 bool bus_system::line_update(unsigned u, const std::string& li)
 {
-	if (u <= line_list.size())
+	if (u < line_list.size())
 	{
-		line_list[u - 1] = read_string_to_bus_line_add(li);
+		bus_line* p = nullptr;
+		if (read_string_to_bus_line_add(li, p))
+		{
+			cout << "线路重名，请重试" << endl;
+			return 1;
+		}
+		line_list[u] = *p;
+		delete p;
 	}
 	else
 	{
-		cout << "error: line_update(unsigned u)中u>=line_list.size" << endl;
+		cout << "error: line_update(unsigned u)中u>line_list.size" << endl;
 		return 1;
 	}
 	ofstream data_bus_file;
@@ -344,10 +364,17 @@ bool bus_system::line_update(unsigned u, const std::string& li)
 }
 bool bus_system::line_add(const string& li)
 {
-	line_list.push_back(read_string_to_bus_line_add(li));
+	bus_line* p = nullptr;
+	if (read_string_to_bus_line_add(li, p))
+	{
+		cout << "路线重名，请重试" << endl;
+		return 1;
+	}
+	line_list.push_back(*p);
+	delete p;
 	ofstream data_bus_file;
 	data_bus_file.open(file_name, ios::app);
-	write_bus_line(data_bus_file, line_list[line_list.size()-1]);
+	write_bus_line(data_bus_file, line_list[line_list.size() - 1]);
 	data_bus_file.close();
 	stop_update();
 	return 0;

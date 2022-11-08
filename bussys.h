@@ -64,7 +64,8 @@ private:
 
 private:
 	bool admin;//管理员权限
-
+	bool admin_menu();
+	bool user_menu();
 public:
 	bus_system(const std::string& str = "bus_system.txt", bool ad = false) :file_name(str)
 	{
@@ -74,7 +75,7 @@ public:
 	}//str为站点线路txt文件，默认存储及读取位置为bus_system.txt
 
 public:
-	bool menu();//显示主菜单
+	void menu();//显示主菜单
 
 	bool switch_privilege() { admin = !admin; return admin; }//切换管理员权限/普通用户权限
 	bool show_privilege()const { return admin; }//返回管理员权限
@@ -103,5 +104,5 @@ private:
 	bool line_add(const std::string& li);// li为符合要求的字符串，仅管理员
 	bool line_delete(unsigned u);//删除下标为u的线路，仅管理员
 	bool line_update(unsigned u, const std::string& li);//将下标为u的线路改为li，仅管理员
-	bus_line read_string_to_bus_line_add(const std::string& li);
+	bool read_string_to_bus_line_add(const std::string& li,bus_line*&p);
 };
