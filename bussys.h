@@ -98,5 +98,5 @@ private:
 	std::vector<std::string> get_stop_name_list();
 	std::vector<bus_system::bus_line> creat_line_list(std::vector<std::string> stop_name_list);
 	std::vector<bus_system::bus_stop>creat_stop_list(std::vector<std::string> stop_name_list, std::vector<bus_system::bus_line>line_list);
-	//test
+	//testt
 };
