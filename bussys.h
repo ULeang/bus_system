@@ -76,10 +76,10 @@ public:
 
 	int line_query(const std::string& start, const std::string& end, std::string* str);//查询两站点间线路，将换乘最少的线路、站数最少的线路及其预估总时间和首末班车时间存入str中，str是一个指向包含两个string元素数组的指针。返回0无可到达路线，1两路线相同，2两路线不同，-1找不到站点，-2始末点相同
 	bool line_showsingle(const std::string& li, std::string* str)const;//将某线路所有站点存入str中，str是一个指向包含一个string元素数组的指针
-	bool line_showall(std::string* str)const;//将所有线路所有站点存入str中，str是一个指向包含line_list.size()个string元素数组的指针
-	bool line_add(std::string li) { return true; }//li为符合要求的字符串，仅管理员
-	bool line_delete(unsigned u) { return true; }//删除序号为u的线路，仅管理员
-	bool line_update(unsigned u, std::string li) { return true; }//将序号为u的线路改为li，仅管理员
+	bool line_showall(std::string* str)const;//将所有线路所有站点存入str中，str是一个指向至少包含line_list.size()个string元素数组的指针
+	bool line_add(const std::string& li) { return true; }//li为符合要求的字符串，仅管理员
+	bool line_delete(unsigned u) { return true; }//删除下标为u的线路，仅管理员
+	bool line_update(unsigned u, const std::string& li) { return true; }//将下标为u的线路改为li，仅管理员
 
 private:
 	bool stop_update() { return true; }//全体更新
