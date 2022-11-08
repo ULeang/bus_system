@@ -126,7 +126,11 @@ int bus_system::get_line_subscript(const std::string& li) const
 	int subscript = -1;
 	for (int i = 0; i < line_list.size(); ++i)
 		if (line_list[i].name == li)
+		{
 			subscript = i;
+			break;
+		}
+
 	return subscript;
 }
 
