@@ -136,22 +136,22 @@ int bus_system::get_line_subscript(const std::string& li) const
 
 bool bus_system::find_end(int stn, int edn, All_line& all_line, Line& temp_line)
 {
-	temp_line.push_back(stop_list[stn].number);
+	temp_line.push_back(stn);
 	if (stn == edn)
 	{
 		all_line.push_back(temp_line);
 		temp_line.pop_back();
 		return true;
 	}
+
 	stop_list[stn].found = true;
 	for (int i = 0; i < stop_list[stn].connect_to_number.size(); ++i)
 	{
-		if (!stop_list[get_stop_subscript(stop_list[stn].connect_to_number[i])].found)
+		if (!stop_list[stop_list[stn].connect_to_number[i]].found)
 		{
-			find_end(get_stop_subscript(stop_list[stn].connect_to_number[i]), edn, all_line, temp_line);
-			stop_list[get_stop_subscript(stop_list[stn].connect_to_number[i])].found = false;
+			find_end(stop_list[stn].connect_to_number[i], edn, all_line, temp_line);
+			stop_list[stop_list[stn].connect_to_number[i]].found = false;
 		}
-
 	}
 	temp_line.pop_back();
 	return false;
