@@ -43,7 +43,7 @@ unsigned bus_system::bus_line::line_check(const Line& li, time& t, unsigned u) c
 
 int bus_system::line_query(const std::string& start, const std::string& end, std::string* str)
 {
-	int st = find_stop(start), ed = find_stop(end);
+	int st = get_stop_subscript(start), ed = get_stop_subscript(end);
 	if (st < 0 || ed < 0)
 		return -1;
 
@@ -84,7 +84,7 @@ int bus_system::line_query(const std::string& start, const std::string& end, std
 
 bool bus_system::line_showsingle(const std::string& li, std::string* str) const
 {
-	int lin = find_line(li);
+	int lin = get_line_subscript(li);
 	if (lin < 0)
 		return false;
 
@@ -107,7 +107,7 @@ bool bus_system::line_showall(std::string* str) const
 	return true;
 }
 
-int bus_system::find_stop(const std::string& st) const
+int bus_system::get_stop_subscript(const std::string& st) const
 
 {
 	int subscript = -1;
@@ -121,7 +121,7 @@ int bus_system::find_stop(const std::string& st) const
 	return subscript;
 }
 
-int bus_system::find_line(const std::string& li) const
+int bus_system::get_line_subscript(const std::string& li) const
 {
 	int subscript = -1;
 	for (int i = 0; i < line_list.size(); ++i)
@@ -199,7 +199,7 @@ std::string bus_system::get_stop_name(int num) const
 	return "null";
 }
 
-int bus_system::get_stop_subscript(int num) const
+std::string bus_system::get_line_name(int num) const
 {
 	for (int i = 0; i < stop_list.size(); ++i)
 		if (stop_list[i].number == num)
