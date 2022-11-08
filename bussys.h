@@ -42,8 +42,8 @@ private:
 			time(unsigned h, unsigned m) { hour = h + m / 60; minute = m % 60; }
 
 			operator std::string()const { return std::to_string(hour) + ":" + std::to_string(minute); }
-
-			friend std::ostream& operator<<(std::ostream& o, const time& t) { o << t.hour << ':' << t.minute; return o; }
+			//实验性质，待检验
+			//friend std::ostream& operator<<(std::ostream& o, const time& t) { o << t.hour << ':' << t.minute; return o; }
 		};
 
 	public:
