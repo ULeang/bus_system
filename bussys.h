@@ -78,10 +78,6 @@ public:
 	bool line_showsingle(const std::string& li, std::string* str)const;//将某线路所有站点存入str中，str是一个指向包含一个string元素数组的指针
 	bool line_showall(std::string* str)const;//将所有线路所有站点存入str中，str是一个指向至少包含line_list.size()个string元素数组的指针
 
-
-private:
-
-
 private:
 	//新成员函数放这里
 	int get_stop_subscript(const std::string& st)const;//返回站点st在内存中的下标，不存在则返回-1
@@ -91,7 +87,6 @@ private:
 	bool final_plan(const Line& li, std::string* str, int u = 0, bus_line::time ti = { 0,0 })const;//将路线li的最终乘车方案（贪心算法）追加到str末尾
 	std::string get_stop_name(int sub)const;//返回下标sub对应的站点名
 	std::string get_line_name(int sub)const;//返回下标sub对应的路线名
-	//test
 
 	const char* file_name;
 	std::vector<std::string>stop_name_list;
@@ -99,10 +94,9 @@ private:
 	bool creat_line_list();
 	bool creat_stop_list();
 	bool write_bus_line(std::ofstream& file, bus_line line);
-	bool stop_update() { return true; }//全体更新
-	bool stop_update_add() { return true; }//仅add时更新
+	bool stop_update();//全体更新
 	bool line_add(const std::string& li);// li为符合要求的字符串，仅管理员
 	bool line_delete(unsigned u);//删除下标为u的线路，仅管理员
-	bool line_update(unsigned u, const std::string& li) { return true; }//将下标为u的线路改为li，仅管理员
+	bool line_update(unsigned u, const std::string& li);//将下标为u的线路改为li，仅管理员
 	bus_line read_string_to_bus_line_add(const std::string& li);
 };

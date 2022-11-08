@@ -92,15 +92,13 @@ bool bus_system::menu()
 					std::cin >> f;
 					if (f == 1)
 					{
-						stop_update_add();
 						std::string addli;
 						std::cout << "请输入新增线路" << std::endl;
-						std::cin >> addli;
+						std::getline(std::cin,addli) ;
 						line_add(addli);
 					}
 					if (f == 2)
 					{
-						stop_update();
 						std::cout << "请输入删除线路序号" << std::endl;
 						int g;
 						std::cin >> g;
@@ -108,11 +106,11 @@ bool bus_system::menu()
 					}
 					if (f == 3)
 					{
-						stop_update();
 						std::cout << "请输入将序号为几的线路改为什么" << std::endl;
 						int h;
 						std::string newli;
-						std::cin >> h >> newli;
+						std::cin >> h;
+						std::getline(std::cin,newli);
 						line_update(h, newli);
 					}
 					if (f != 1 && f != 2 && f != 3)
