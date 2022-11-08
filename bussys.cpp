@@ -99,10 +99,10 @@ bool bus_system::line_showall(std::string* str) const
 {
 	for (int i = 0; i < line_list.size(); ++i)
 	{
-		*(str + i) = std::to_string(line_list[i].number) + "@" + line_list[i].name + ":";
+		*(str + i) = std::to_string(i) + "@" + line_list[i].name + ":";
 		for (int j = 0; j < line_list[i].line.size() - 1; ++j)
 			*(str + i) = *(str + i) + get_stop_name(line_list[i].line[j]) + " " + std::string(line_list[i].estimated_time[j]) + " ";
-		*(str + i) = *(str + i) + get_stop_name(line_list[i].line[line_list[i].line.size() - 1]) + " # " + std::string(line_list[i].first) + "-" + std::string(line_list[i].last);
+		*(str + i) = *(str + i) + get_stop_name(*(line_list[i].line.end() - 1)) + " # " + std::string(line_list[i].first) + "-" + std::string(line_list[i].last);
 	}
 	return true;
 }
