@@ -44,7 +44,7 @@ unsigned bus_system::bus_line::line_check(const Line& li, time& t, unsigned u) c
 int bus_system::line_query(const std::string& start, const std::string& end, std::string* str)
 {
 	int st = get_stop_subscript(start), ed = get_stop_subscript(end);
-	if (st < 0 || ed < 0)
+	if (st == -1 || ed == -1)
 		return -1;
 
 	if (st == ed)
@@ -52,9 +52,9 @@ int bus_system::line_query(const std::string& start, const std::string& end, std
 
 	All_line al; Line li;
 	find_end(st, ed, al, li);
-	stop_list[st].found = false;
 	if (al.size() == 0)
 		return 0;
+	stop_list[st].found = false;
 
 	//»»³Ë×îÉÙ
 	int subscript_t = -1, transfer_num = 65535;
