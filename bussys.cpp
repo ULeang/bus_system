@@ -90,7 +90,7 @@ bool bus_system::line_showsingle(const std::string& li, std::string* str) const
 
 	*str = li + ":";
 	for (auto x : line_list[lin].line)
-		*str = *str + get_stop_name(x) + "*";
+		*str = *str + stop_list[x].name + "*";
 	*str = *str + std::string(line_list[lin].first) + "-" + std::string(line_list[lin].last);
 	return true;
 }
@@ -101,8 +101,8 @@ bool bus_system::line_showall(std::string* str) const
 	{
 		*(str + i) = std::to_string(i) + "@" + line_list[i].name + ":";
 		for (int j = 0; j < line_list[i].line.size() - 1; ++j)
-			*(str + i) = *(str + i) + get_stop_name(line_list[i].line[j]) + " " + std::string(line_list[i].estimated_time[j]) + " ";
-		*(str + i) = *(str + i) + get_stop_name(*(line_list[i].line.end() - 1)) + " # " + std::string(line_list[i].first) + "-" + std::string(line_list[i].last);
+			*(str + i) = *(str + i) + stop_list[line_list[i].line[j]].name + " " + std::string(line_list[i].estimated_time[j]) + " ";
+		*(str + i) = *(str + i) + stop_list[*(line_list[i].line.end() - 1)].name + " # " + std::string(line_list[i].first) + "-" + std::string(line_list[i].last);
 	}
 	return true;
 }
