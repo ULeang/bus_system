@@ -174,23 +174,23 @@ bool bus_system::final_plan(const Line& li, std::string* str, int u, bus_line::t
 {
 	int subscript = -1;
 	bus_line::time t, tt;
-	int max_stop = 0, stop_num = 0;
+	int max_stop_num = 0, stop_num = 0;
 	for (int i = 0; i < line_list.size(); ++i)
-		if ((stop_num = line_list[i].line_check(li, tt, u)) > max_stop)
+		if ((stop_num = line_list[i].line_check(li, tt, u)) > max_stop_num)
 		{
-			max_stop = stop_num;
+			max_stop_num = stop_num;
 			subscript = i;
 			t = tt;
 		}
-	*str = *str + get_stop_name(li[u]) + "#" + line_list[subscript].name + "Ïß" + std::to_string(max_stop - 1) + "Õ¾#";
-	if (u + max_stop == li.size())
+	*str = *str + get_stop_name(li[u]) + "#" + line_list[subscript].name + "Ïß" + std::to_string(max_stop_num - 1) + "Õ¾#";
+	if (u + max_stop_num == li.size())
 	{
 		*str = *str + std::string(ti + t);
 		return true;
 	}
 	else
 	{
-		final_plan(li, str, u + max_stop - 1, ti + t);
+		final_plan(li, str, u + max_stop_num - 1, ti + t);
 		return false;
 	}
 }
