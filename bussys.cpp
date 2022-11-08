@@ -198,7 +198,7 @@ bool bus_system::final_plan(const Line& li, std::string* str, int u, bus_line::t
 std::string bus_system::get_stop_name(int num) const
 {
 	for (int i = 0; i < stop_list.size(); ++i)
-		if (stop_list[i].number == num)
+		if (i == num)
 			return stop_list[i].name;
 	return "null";
 }
@@ -206,7 +206,7 @@ std::string bus_system::get_stop_name(int num) const
 std::string bus_system::get_line_name(int num) const
 {
 	for (int i = 0; i < stop_list.size(); ++i)
-		if (stop_list[i].number == num)
-			return i;
-	return -1;
+		if (i == num)
+			return line_list[i].name;
+	return "null";
 }
