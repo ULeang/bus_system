@@ -1,7 +1,5 @@
 #include "bussys.h"
 
-using namespace std;
-
 bool bus_system::menu()
 {
 	std::cout << "Welcome to our automated bus route selection system!欢迎来到查询系统！" << std::endl;
@@ -12,9 +10,9 @@ bool bus_system::menu()
 		std::cout << "1线路查询" << std::endl;
 		std::cout << "2车次查询" << std::endl;
 		std::cout << "3管理员权限" << std::endl;
-		std::cout << "请输入对应序号开始" << std::endl;
+		std::cout << "请输入对应序号开始" << std::endl;//普通用户菜单
 		std::cin >> a;
-		if (a == 1)
+		if (a == 1)//线路查询
 		{
 			std::string start;
 			std::string end;
@@ -35,21 +33,15 @@ bool bus_system::menu()
 			{
 				std::cout << "换乘最少线路与站数最少路线相同,如下" << std::endl;
 				std::cout << str1[0] << std::endl;
-				std::string* all = NULL;
-				//all = (std::string*)malloc(line_list.size());
-				all = new string[line_list.size()];
 			}
 			if (b == 2)
 			{
 				std::cout << "换乘最少线路与站数最少路线不同,如下" << std::endl;
 				std::cout << str1[0] << std::endl;
 				std::cout << str1[1] << std::endl;
-				std::string* all = NULL;
-				//all = (std::string*)malloc(line_list.size()*sizeof(string));
-				all = new string[line_list.size()];
 			}
 		}
-		if (a == 2)
+		if (a == 2)//车次查询
 		{
 			std::cout << "请输入需要查询的公交车次" << std::endl;
 			std::string line1;
@@ -66,7 +58,7 @@ bool bus_system::menu()
 				std::cout << str2 << std::endl;
 			}
 		}
-		if (a == 3)
+		if (a == 3)//管理员权限
 		{
 			std::cout << "当前权限为" << std::endl;
 			std::cout << admin << std::endl;
@@ -77,21 +69,31 @@ bool bus_system::menu()
 			{
 				switch_privilege();
 			}
-			if (admin == true)
+			if (admin == true)//检查是否为管理员
 			{
 				int f;
 				bool i;
 				std::cout << "Hello,admin!欢迎进入管理菜单" << std::endl;
 				do {
+					std::string* all = NULL;
+					all = new std::string[line_list.size()];
+					line_showall(all);
+					std::cout << "当前所有线路如下" << std::endl;
+					int k, l;
+					l = line_list.size();
+					for (k = 0; k < l; k++)
+					{
+						std::cout << all[k] << std::endl;
+					}
 					std::cout << "1新增线路" << std::endl;
 					std::cout << "2删除线路" << std::endl;
 					std::cout << "3修改线路" << std::endl;
-					std::cout << "请输入对应序号开始" << std::endl;
+					std::cout << "请输入对应序号开始" << std::endl;//管理员菜单
 					std::cin >> f;
 					if (f == 1)
 					{
 						stop_update_add();
-						std::string addli;;
+						std::string addli;
 						std::cout << "请输入新增线路" << std::endl;
 						std::cin >> addli;
 						line_add(addli);
@@ -119,6 +121,7 @@ bool bus_system::menu()
 					}
 					std::cout << "输入0继续管理,输入其他数字退出" << std::endl;
 					std::cin >> i;
+					delete[] all;
 				} while (i == 0);
 			}
 			else
