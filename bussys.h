@@ -15,13 +15,12 @@ private:
 	class bus_stop
 	{
 	public:
-		int number;//序号
 		std::string name;//站点名
 		std::vector<int> connect_to_number;//所有能直接到达站点序号
 
 		bool found = false;//用于标记是否已发现
 
-		bus_stop(int num, std::string na, std::vector<int> ctn) :number(num), name(std::move(na)), connect_to_number(std::move(ctn)) {}
+		bus_stop(std::string na, std::vector<int> ctn) :name(std::move(na)), connect_to_number(std::move(ctn)) {}
 	};
 
 	class bus_line
