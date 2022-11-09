@@ -121,6 +121,14 @@ bool bus_system::user_menu()
 		std::cout << "请输入对应序号开始" << std::endl;//普通用户菜单
 		getline(std::cin, a);
 		std::cout << "##############\n";
+		if (a == "q")
+		{
+
+			//std::cout << "请输入正确序号" << std::endl;
+			std::cout << "已退出\n";
+			std::system("pause");
+			return 0;
+		}
 		if (a == "1")//线路查询
 		{
 			std::string start;
@@ -174,31 +182,24 @@ bool bus_system::user_menu()
 			std::string e;
 			std::cout << "是否切换权限？[Y/N]" << std::endl;
 			std::cin >> e;
-			if (e == "y" || e == "Y")
 			{
-				switch_privilege();
-				return 1;
-			}
-			else if (e == "n" || e == "N")
-			{
+				if (e == "y" || e == "Y")
+				{
+					switch_privilege();
+					return 1;
+				}
+				else if (e == "n" || e == "N")
+				{
 
+				}
 			}
-			else if (a == "q")
-			{
-
-				//std::cout << "请输入正确序号" << std::endl;
-				getchar();
-				std::cout << "已退出\n";
-				std::system("pause");
-				return 0;
-			}
-			else
-			{
-				std::cout << "请重新输入\n";
-			}
-
-			//std::cout << "输入0继续查询,输入其他数字退出" << std::endl;
 		}
+		else
+		{
+			std::cout << "请重新输入\n";
+		}
+
+		//std::cout << "输入0继续查询,输入其他数字退出" << std::endl;
 	}
 }
 void bus_system::menu()
