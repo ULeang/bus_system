@@ -69,7 +69,7 @@ private:
 public:
 	bus_system(const std::string& str = "bus_system.txt", bool ad = false) :file_name(str)
 	{
-		get_stop_name_list();
+		get_name_to_stop_list();
 		creat_line_list();
 		creat_stop_list();
 	}//str为站点线路txt文件，默认存储及读取位置为bus_system.txt
@@ -95,16 +95,16 @@ private:
 	std::string get_line_name(int sub)const;//返回下标sub对应的路线名
 
 	const std::string file_name;
-	std::vector<std::string>stop_name_list;
-	bool get_stop_name_list();
+	//std::vector<std::string>stop_name_list;
+	bool get_name_to_stop_list();
 	bool creat_line_list();
 	bool creat_stop_list();
 	bool write_bus_line_list();
 	bool stop_update();//全体更新
 	bool line_add(const std::string& li);// li为符合要求的字符串，仅管理员
-	bool line_delete(unsigned u);//删除下标为u的线路，仅管理员
-	bool line_update(unsigned u, const std::string& li);//将下标为u的线路改为li，仅管理员
+	bool line_delete(const unsigned &u);//删除下标为u的线路，仅管理员
+	bool line_update(const unsigned &u, const std::string& li);//将下标为u的线路改为li，仅管理员
 	bool read_string_to_bus_line_add(const std::string& li, bus_line*& p);
 
-	void checkthis(const std::string& g);
+	bool checkthis(const std::string& g);
 };
