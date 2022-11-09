@@ -43,7 +43,7 @@ bool bus_system::admin_menu()
 			{
 				while (line_add(addli))
 				{
-					getline(std::cin, addli);			
+					getline(std::cin, addli);
 				}
 				flag = 1;
 			}
@@ -116,9 +116,9 @@ bool bus_system::admin_menu()
 		}
 		else if (f == "q")
 		{
-			
+
 			std::cout << "已退出\n";
-			std::system("pause");
+			//std::system("pause");
 			return 0;
 		}
 		else if (f == "0")
@@ -163,20 +163,24 @@ bool bus_system::user_menu()
 			std::cout << "请输入目的地" << std::endl;
 			getline(std::cin, end);
 			int b = line_query(start, end, str1);
-			if (b == -1)
+			if (b == -2)
+			{
+				std::cout << "始末点相同，禁止如蜜传如蜜" << std::endl;
+			}
+			else if (b == -1)
 			{
 				std::cout << "找不到站点，请检查输入是否正确" << std::endl;
 			}
-			if (b == 0)
+			else if (b == 0)
 			{
 				std::cout << "无可到达路线" << std::endl;
 			}
-			if (b == 1)
+			else if (b == 1)
 			{
 				std::cout << "换乘最少线路与站数最少路线相同,如下" << std::endl;
 				std::cout << str1[0] << std::endl;
 			}
-			if (b == 2)
+			else if (b == 2)
 			{
 				std::cout << "换乘最少线路与站数最少路线不同,如下" << std::endl;
 				std::cout << str1[0] << std::endl;
@@ -224,7 +228,7 @@ bool bus_system::user_menu()
 		else if (a == "q")
 		{
 			std::cout << "已退出\n";
-			system("pause >nul");
+			//system("pause >nul");
 			return 0;
 		}
 		else
