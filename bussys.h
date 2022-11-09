@@ -99,10 +99,10 @@ private:
 	bool get_stop_name_list();
 	bool creat_line_list();
 	bool creat_stop_list();
-	bool write_bus_line(std::ofstream& file, bus_line line);
+	bool write_bus_line_list();
 	bool stop_update();//全体更新
 	bool line_add(const std::string& li);// li为符合要求的字符串，仅管理员
 	bool line_delete(unsigned u);//删除下标为u的线路，仅管理员
 	bool line_update(unsigned u, const std::string& li);//将下标为u的线路改为li，仅管理员
-	bool read_string_to_bus_line_add(const std::string& li,bus_line*&p);
+	bool read_string_to_bus_line_add(const std::string& li, bus_line*& p);
 };
