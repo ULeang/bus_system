@@ -136,9 +136,6 @@
     <ClCompile Include="bussys_t.cpp" />
     <ClCompile Include="m.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="C:\Users\午夜曦月\source\repos\bus_system\bus_system.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
