@@ -22,73 +22,59 @@ bool bus_system::admin_menu()
 		std::cout << "3——修改线路" << std::endl;
 		std::cout << "请输入对应序号开始" << std::endl;//管理员菜单
 		std::string f;
-		std::cin >> f;
+		getline(std::cin, f);
 		std::cout << "##############\n";
 		if (f == "1")
 		{
+			std::cout << "r——返回管理员界面\n";
 			std::string addli;
 			std::cout << "请输入新增线路" << std::endl;
-			getchar();
 			getline(std::cin, addli);
-			line_add(addli);
+			if (addli == "r")
+			{
+			}
+			else
+			{
+				line_add(addli);
+			}
 		}
 		else if (f == "2")
 		{
 			std::cout << "r——返回管理员界面\n";
 			std::cout << "请输入删除线路序号" << std::endl;
 			std::string g;
-			getchar();
-			while (true)
+			getline(std::cin, g);
+			if (g == "r")
 			{
-				getline(std::cin, g);
-				if (g == "r")
-				{
-					break;
-				}
-				else
-				{
-					bool flag = 1;
-					for (size_t i = 0; i < g.length(); i++)//检查是否有非数字字符，若有则将flag改为0；
-					{
-						if (int(g[i]) < 48 || int(g[i]) > 57)
-						{
-							flag = 0;
-							std::cout << "错误的输入,请重试\n";
-							break;
-						}
-					}
-					if (flag)
-					{
-						int number = 0;
-						for (int i = 0; i < g.length(); i++)
-						{
-							number = number * 10 + int(g[i]) - 48;
-						}
-						if (!line_delete(number))
-						{
-							break;
-						}
-					}
-				}
 			}
-
-
+			else
+			{
+				checkthis(g);
+			}
 		}
 		else if (f == "3")
 		{
+			std::cout << "r——返回管理员界面\n";
 			std::cout << "请输入修改路线的序号" << std::endl;
-			int h;
-			std::string newli;
-			std::cin >> h;
-			getchar();
-			std::cout << "输入修改后的线路" << std::endl;
-			getline(std::cin, newli);
-			line_update(h, newli);
+			std::string  h;
+			getline(std::cin, h);
+			if (h == "r")
+			{
+			}
+			else
+			{
+				checkthis(h);
+				int m = stoi(h);
+				std::string newli;
+				std::cout << "输入修改后的线路" << std::endl;
+				getline(std::cin, newli);
+				line_update(m, newli);
+			}
 		}
-		else if (f == "q") {
+		else if (f == "q")
+		{
 			delete[] all;
 			getchar();
-
 			std::cout << "已退出\n";
 			std::system("pause");
 			return 0;
@@ -121,22 +107,14 @@ bool bus_system::user_menu()
 		std::cout << "请输入对应序号开始" << std::endl;//普通用户菜单
 		getline(std::cin, a);
 		std::cout << "##############\n";
-		if (a == "q")
-		{
-
-			//std::cout << "请输入正确序号" << std::endl;
-			std::cout << "已退出\n";
-			std::system("pause");
-			return 0;
-		}
 		if (a == "1")//线路查询
 		{
 			std::string start;
 			std::string end;
 			std::string str1[2];
 			std::cout << "请输入出发地与目的地" << std::endl;
-			std::cin >> start;
-			std::cin >> end;
+			getline(std::cin, start);
+			getline(std::cin, end);
 			int b = line_query(start, end, str1);
 			if (b == -1)
 			{
@@ -163,7 +141,7 @@ bool bus_system::user_menu()
 			std::cout << "请输入需要查询的公交车次" << std::endl;
 			std::string line1;
 			std::string str2;
-			std::cin >> line1;
+			getline(std::cin, line1);
 			int d = line_showsingle(line1, &str2);
 			if (d == 0)
 			{
@@ -181,18 +159,25 @@ bool bus_system::user_menu()
 			std::cout << (admin ? "管理员" : "普通用户") << std::endl;
 			std::string e;
 			std::cout << "是否切换权限？[Y/N]" << std::endl;
-			std::cin >> e;
+			getline(std::cin, e);
+			if (e == "y" || e == "Y")
 			{
-				if (e == "y" || e == "Y")
-				{
-					switch_privilege();
-					return 1;
-				}
-				else if (e == "n" || e == "N")
-				{
-
-				}
+				switch_privilege();
+				return 1;
 			}
+			else if (e == "n" || e == "N")
+			{
+
+			}
+		}
+		else if (a == "q")
+		{
+
+			//std::cout << "请输入正确序号" << std::endl;
+			getchar();
+			std::cout << "已退出\n";
+			std::system("pause");
+			return 0;
 		}
 		else
 		{
@@ -218,6 +203,34 @@ void bus_system::menu()
 			if (!user_menu())
 			{
 				return;
+			}
+		}
+	}
+}
+void bus_system::checkthis(const std::string& g)
+{
+	while (true)
+	{
+		bool flag = 1;
+		for (size_t i = 0; i < g.length(); i++)//检查是否有非数字字符，若有则将flag改为0；
+		{
+			if (int(g[i]) < 48 || int(g[i]) > 57)
+			{
+				flag = 0;
+				std::cout << "错误的输入,请重试\n";
+				break;
+			}
+		}
+		if (flag)
+		{
+			int number = 0;
+			for (int i = 0; i < g.length(); i++)
+			{
+				number = number * 10 + int(g[i]) - 48;
+			}
+			if (!line_delete(number))
+			{
+				break;
 			}
 		}
 	}
