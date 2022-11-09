@@ -182,7 +182,7 @@ bool bus_system::final_plan(const Line& li, std::string* str, int u, bus_line::t
 			subscript = i;
 			t = tt;
 		}
-	*str = *str + stop_list[li[u]].name + "#" + line_list[subscript].name + "Ïß" + std::to_string(max_stop_num - 1) + "Õ¾#";
+	*str = *str + stop_list[li[u]].name + "¡ª¡ª" + line_list[subscript].name + "Ïß" + std::to_string(max_stop_num - 1) + "Õ¾¡ª¡ª";
 	if (u + max_stop_num == li.size())
 	{
 		*str = *str + stop_list[*(li.end() - 1)].name + "#" + std::string(ti + t);
