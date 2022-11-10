@@ -105,6 +105,6 @@ private:
 	bool line_delete(const unsigned &u);//删除下标为u的线路，仅管理员
 	bool line_update(const unsigned &u, const std::string& li);//将下标为u的线路改为li，仅管理员
 	bool read_string_to_bus_line_add(const std::string& li, bus_line*& p);
-
 	bool checkthis(const std::string& g);
+	bool check_string_to_busline(const std::string& check_string);
 };

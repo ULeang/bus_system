@@ -1,10 +1,8 @@
 #include "bussys.h"
-#include <iostream>
-#include <fstream>
 #include <direct.h>
-#include <vector>
 
 using namespace std;
+//return 0;表示0 error，reutrn 1; 表示报错
 bool bus_system::get_name_to_stop_list()
 {
 	ifstream bus_data_file;
@@ -12,7 +10,7 @@ bool bus_system::get_name_to_stop_list()
 	if (!bus_data_file.is_open())
 	{
 		char* cwd = _getcwd(NULL, 0);
-		cout << "未成功打开文件：" << cwd<<"\\" << file_name << "请检查文件是否存在" << endl;
+		cout << "未成功打开文件：" << cwd<<"\\" << file_name << "请检查文件是否存在或请管理员增加路线以创建文件" << endl;
 		return 1;
 	}
 	string temp;
@@ -35,7 +33,7 @@ bool bus_system::get_name_to_stop_list()
 		}
 		bus_data_file >> temp;
 		stop_list.push_back(bus_stop(temp, vector<int>()));
-		for (int i = 0; i < stop_list.size() - 1; i++)//去除重复
+		for (size_t i = 0; i < stop_list.size() - 1; i++)//去除重复
 		{
 			if (temp == stop_list[i].name)
 			{
@@ -54,17 +52,17 @@ bool bus_system::creat_line_list()
 		cout << "请检查" << file_name << "是否为空" << endl;
 	}
 
-	string line_name;
-	string temp_stop_name;
 	ifstream bus_data_file;
 	bus_data_file.open(file_name, ios::in);
 	if (!bus_data_file.is_open())
 	{
-		char* cwd = _getcwd(NULL, 0);
-		cout << "未成功打开文件：" << cwd <<"\\" << file_name << "请检查文件是否存在" << endl;
+		//char* cwd = _getcwd(NULL, 0);
+		//cout << "未成功打开文件：" << cwd <<"\\" << file_name << "请检查文件是否存在" << endl;
 		return 1;
 	}
 
+	string line_name;
+	string temp_stop_name;
 	while (!bus_data_file.eof())
 	{
 		vector<int>stop_number;
@@ -74,48 +72,60 @@ bool bus_system::creat_line_list()
 		{
 			break;
 		}
+
 		string temp_time;
 		while (true)
 		{
 			unsigned time = 0;
-			bus_data_file >> temp_stop_name;
-			for (int i = 0; i < stop_list.size(); i++)
+
+			bus_data_file >> temp_stop_name;//获取站名
+
+			for (size_t i = 0; i < stop_list.size(); i++)
 			{
-				if (temp_stop_name == stop_list[i].name) {
+				if (temp_stop_name == stop_list[i].name)
+				{
 					stop_number.push_back(i);
 				}
 			}
-			bus_data_file >> temp_time;
-			if (temp_time == "#") {
+			//站名并转换为对应序号
+
+			bus_data_file >> temp_time;//获取预估时间
+
+			if (temp_time == "#") 
+			{
 				break;
 			}
-			else {
-				for (int k = 0; k < temp_time.length(); k++)
-				{
-					time = time * 10 + int(temp_time[k]) - 48;
-				}
+			else 
+			{
+				time = stoi(temp_time);
 			}
 			estimated_time.push_back(bus_line::time(time));
-		}//读取路线中所有站名并转换为对应序号，已经所有站间预估时间
+		}
+		//读取路线中所有站名并转换为对应序号，已经所有站间预估时间
+		
+			unsigned time_1 = 0;
+			unsigned time_2 = 0;
+			int g = 0;
 
-		unsigned time_1 = 0;
-		unsigned time_2 = 0;
-		int g = 0;
-		bus_data_file >> temp_time;
-		g = temp_time.find(":");
-		time_1 = stoi(temp_time.substr(0, g));
-		time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
-		bus_line::time first_temp(time_1,time_2);
-		bus_data_file >> temp_time;
-		g = temp_time.find(":");
-		time_1= stoi(temp_time.substr(0,g));
-		time_2 = stoi(temp_time.substr(g + 1, temp_time.length() -1-g));		
-		bus_line::time last_temp(time_1, time_2);
-		bus_line Temp(line_name, stop_number, estimated_time, first_temp, last_temp);
+			bus_data_file >> temp_time;
+
+			g = temp_time.find(":");
+			time_1 = stoi(temp_time.substr(0, g));
+			time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
+			bus_line::time first_temp(time_1, time_2);
+
+			bus_data_file >> temp_time;
+
+			g = temp_time.find(":");
+			time_1 = stoi(temp_time.substr(0, g));
+			time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
+			bus_line::time last_temp(time_1, time_2);
+		//获取首班车和末班车时间
+
+		line_list.push_back(bus_line(line_name, stop_number, estimated_time, first_temp, last_temp));
+
 		string p;
 		getline(bus_data_file, p);
-		line_list.push_back(Temp);
-		//获取首班车时间和末班车时间
 	}
 	bus_data_file.close();
 	return 0;
@@ -127,9 +137,9 @@ bool bus_system::creat_stop_list()
 		cout << "line_list为空，请检查是否创建line_list" << endl;
 		return 1;
 	}
-	for (int i = 0; i < line_list.size(); i++)
+	for (size_t i = 0; i < line_list.size(); i++)
 	{
-		for (int j = 0; j < line_list[i].line.size() - 1; j++)
+		for (size_t j = 0; j < line_list[i].line.size() - 1; j++)
 		{
 			int number1 = line_list[i].line[j];
 			int number2 = line_list[i].line[j + 1];
@@ -142,7 +152,7 @@ bool bus_system::write_bus_line_list()
 {
 	ofstream data_bus_file;
 	data_bus_file.open(file_name, ios::out);
-	for (int j = 0; j < line_list.size(); j++)
+	for (size_t  j = 0; j < line_list.size(); j++)
 	{
 		if (j != 0)
 		{
@@ -152,7 +162,7 @@ bool bus_system::write_bus_line_list()
 		{
 			data_bus_file << line_list[j].name + " ";
 		}
-		for (int i = 0; i < line_list[j].line.size(); i++)
+		for (size_t i = 0; i < line_list[j].line.size(); i++)
 		{
 			data_bus_file << stop_list[line_list[j].line[i]].name + " ";
 			if (i < line_list[j].estimated_time.size())
@@ -170,8 +180,7 @@ bool bus_system::read_string_to_bus_line_add(const string& li, bus_line*& p)
 {
 	vector<string> temp_list;
 	string temp_string = "";
-	string line_name;
-	for (int i = 0; i < li.length(); i++)//以空白符分割字符串
+	for (size_t i = 0; i < li.length(); i++)//以空白符分割字符串
 	{
 		if (li[i] != ' ')
 		{
@@ -184,14 +193,12 @@ bool bus_system::read_string_to_bus_line_add(const string& li, bus_line*& p)
 				temp_list.push_back(temp_string);
 				temp_string = "";
 			}
-
-
 		}
 	}
-	for (int i = 1; i < temp_list.size() - 3; i += 2)//修改stop_list;
+	for (size_t i = 1; i < temp_list.size() - 3; i += 2)//修改stop_list;
 	{
 		stop_list.push_back(bus_stop(temp_list[i], vector<int>()));
-		for (int j = 0; j < stop_list.size() - 1; j++)//去除重复
+		for (size_t j = 0; j < stop_list.size() - 1; j++)//去除重复
 		{
 			if (temp_list[i] == stop_list[j].name)
 			{
@@ -203,46 +210,53 @@ bool bus_system::read_string_to_bus_line_add(const string& li, bus_line*& p)
 	int n = 0;
 	vector<int>stop_number;
 	vector<bus_line::time>estimated_time;
-	line_name = temp_list[n++];
-
+	string line_name;
 	string temp_time;
 	string temp_stop_name;
+
+	line_name = temp_list[n++];
 	while (true)
 	{
 		unsigned time = 0;
 		temp_stop_name = temp_list[n++];
-		for (int i = 0; i < stop_list.size(); i++)
+		for (size_t i = 0; i < stop_list.size(); i++)
 		{
-			if (temp_stop_name == stop_list[i].name) {
+			if (temp_stop_name == stop_list[i].name) 
+			{
 				stop_number.push_back(i);
 			}
 		}
 		temp_time = temp_list[n++];
-		if (temp_time == "#") {
+		if (temp_time == "#") 
+		{
 			break;
 		}
-		else {
-			for (int k = 0; k < temp_time.length(); k++)
-			{
-				time = time * 10 + int(temp_time[k]) - 48;
-			}
+		else 
+		{
+			time = stoi(temp_time);
 		}
 		estimated_time.push_back(bus_line::time(time));
 	}
-	unsigned time_1 = 0;
-	unsigned time_2 = 0;
-	int g = 0;
-	temp_time=temp_list[n++];
-	g = temp_time.find(":");
-	time_1 = stoi(temp_time.substr(0, g));
-	time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
-	bus_line::time first_temp(time_1, time_2);
-	temp_time = temp_list[n++];
-	g = temp_time.find(":");
-	time_1 = stoi(temp_time.substr(0, g));
-	time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
-	bus_line::time last_temp(time_1, time_2);
-	bus_line Temp(line_name, stop_number, estimated_time, first_temp, last_temp);
+	
+		unsigned time_1 = 0;
+		unsigned time_2 = 0;
+		int g = 0;
+
+		temp_time = temp_list[n++];
+
+		g = temp_time.find(":");
+		time_1 = stoi(temp_time.substr(0, g));
+		time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
+		bus_line::time first_temp(time_1, time_2);
+
+		temp_time = temp_list[n++];
+
+		g = temp_time.find(":");
+
+		time_1 = stoi(temp_time.substr(0, g));
+		time_2 = stoi(temp_time.substr(g + 1, temp_time.length() - 1 - g));
+		bus_line::time last_temp(time_1, time_2);
+	
 	p = new bus_line(line_name, stop_number, estimated_time, first_temp, last_temp);
 	return false;
 }//指针p接收生成的bus_line对象
@@ -268,7 +282,7 @@ bool bus_system::line_update(const unsigned& u, const std::string& li)
 	{
 		bus_line* p = nullptr;
 		read_string_to_bus_line_add(li, p);
-		for (int i = 0; i < line_list.size(); i++)
+		for (size_t i = 0; i < line_list.size(); i++)
 		{
 			if (p->name == line_list[i].name && i != u)
 			{
@@ -294,11 +308,11 @@ bool bus_system::line_add(const string& li)
 
 	bus_line* p = nullptr;
 	read_string_to_bus_line_add(li, p);
-	for (int i = 0; i < line_list.size(); i++)
+	for (size_t i = 0; i < line_list.size(); i++)
 	{
 		if (p->name == line_list[i].name)
 		{
-			cout << "存在重名现象，请重试" << endl;
+			//cout << "存在重名现象，请重试" << endl;
 			delete p;
 			return true;
 		}
@@ -316,5 +330,97 @@ bool bus_system::stop_update()
 	get_name_to_stop_list();
 	creat_line_list();
 	creat_stop_list();
+	return 0;
+}
+bool bus_system::check_string_to_busline(const string & check_string)
+{
+	vector<string> temp_list;
+	string temp_string = "";
+	for (size_t i = 0; i < check_string.length(); i++)
+	{
+		if (check_string[i] != ' ')
+		{
+				temp_string = temp_string + check_string[i];
+		}
+		else
+		{
+			if (temp_string.length() != 0)
+			{
+				temp_list.push_back(temp_string);
+				temp_string = "";
+			}
+		}
+	}
+	//以空白符为分割符分割check_string,结果储存在temp_list中
+	if (temp_list.size() < 9)
+	{
+		return 1;
+	}
+	//有两个站的路线最少需要
+	size_t pos = 0;//储存第一个#号所在位置
+	for (size_t i = 0; i < temp_list.size(); i++)
+	{
+		if (temp_list[i] == "#")
+		{
+			pos = i;
+			break;
+		}
+	}
+	//获取第一个#号所在位置
+	if (!pos)
+	{
+		return 1;
+	}
+	//如果＃号位置为0则返回错误
+	if (temp_list.size() - 1 < pos+3)
+	{
+		if (temp_list.size() - 1 != pos + 2)
+		{
+			return 1;
+		}
+		else
+		{
+			if (temp_string[0] != '#')
+			{
+				return 1;
+			}
+		}
+
+	}
+	else
+	{
+		if (temp_list[pos + 3][0] != '#')
+		{
+			return 1;
+		}
+	}
+	//验证第一个#号后第三个字符串的第一个字符是否为#号
+	for (size_t i = 2; i < pos; i+=2)
+	{
+		if (!checkthis(temp_list[i]))
+		{
+			return 1;
+		}
+	}
+	//检查预估时间位置上是否均为纯数字
+	if (pos % 2 != 1)
+	{
+		return  1;
+	}
+	//合法输入中pos中只能为奇数
+	for (int i = 1; i <3; i++)
+	{
+		int  _pos_ = 0;//储存':'所在位置
+		_pos_ = temp_list[pos + i].find(':');
+			if (!checkthis(temp_list[pos + i].substr(0, _pos_))|| temp_list[pos + i].length()>2)
+			{
+				return 1;
+			}
+			if (!checkthis(temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_)) || temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_).length() > 2)
+			{
+				return 1;
+			}
+	}
+	//检查首班车时间与末班车时间是否符号要求
 	return 0;
 }
