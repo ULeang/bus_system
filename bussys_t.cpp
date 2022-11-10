@@ -12,7 +12,7 @@ bool bus_system::get_name_to_stop_list()
 	if (!bus_data_file.is_open())
 	{
 		char* cwd = _getcwd(NULL, 0);
-		cout << "未成功打开文件：" << cwd << file_name << "请检查文件是否存在" << endl;
+		cout << "未成功打开文件：" << cwd<<"\\" << file_name << "请检查文件是否存在" << endl;
 		return 1;
 	}
 	string temp;
@@ -61,7 +61,7 @@ bool bus_system::creat_line_list()
 	if (!bus_data_file.is_open())
 	{
 		char* cwd = _getcwd(NULL, 0);
-		cout << "未成功打开文件：" << cwd << file_name << "请检查文件是否存在" << endl;
+		cout << "未成功打开文件：" << cwd <<"\\" << file_name << "请检查文件是否存在" << endl;
 		return 1;
 	}
 
