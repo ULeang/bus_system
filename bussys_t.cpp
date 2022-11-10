@@ -7,12 +7,12 @@ bool bus_system::get_name_to_stop_list()
 {
 	ifstream bus_data_file;
 	bus_data_file.open(file_name, ios::in);
-	if (!bus_data_file.is_open())
-	{
-		char* cwd = _getcwd(NULL, 0);
-		cout << "未成功打开文件：" << cwd<<"\\" << file_name << "请检查文件是否存在或请管理员增加路线以创建文件" << endl;
-		return 1;
-	}
+	//if (!bus_data_file.is_open())
+	//{
+	//	char* cwd = _getcwd(NULL, 0);
+	//	cout << "未成功打开文件：" << cwd<<"\\" << file_name << "\n请检查文件是否存在或请管理员增加路线以创建文件" << endl;
+	//	return 1;
+	//}
 	string temp;
 	string p_flush;
 	while (!bus_data_file.eof())
@@ -49,7 +49,7 @@ bool bus_system::creat_line_list()
 {
 	if (stop_list.empty())
 	{
-		cout << "请检查" << file_name << "是否为空" << endl;
+		//cout << "请检查" << file_name << "是否为空" << endl;
 	}
 
 	ifstream bus_data_file;
@@ -134,7 +134,7 @@ bool bus_system::creat_stop_list()
 {
 	if (line_list.empty())
 	{
-		cout << "line_list为空，请检查是否创建line_list" << endl;
+		//cout << "line_list为空，请检查是否创建line_list" << endl;
 		return 1;
 	}
 	for (size_t i = 0; i < line_list.size(); i++)
@@ -403,16 +403,16 @@ bool bus_system::check_string_to_busline(const string & check_string)
 		}
 	}
 	//检查预估时间位置上是否均为纯数字
-	if (pos % 2 != 1)
+	if (pos % 2 != 0)
 	{
 		return  1;
 	}
-	//合法输入中pos中只能为奇数
+	//合法输入中pos中只能为偶数
 	for (int i = 1; i <3; i++)
 	{
 		int  _pos_ = 0;//储存':'所在位置
 		_pos_ = temp_list[pos + i].find(':');
-			if (!checkthis(temp_list[pos + i].substr(0, _pos_))|| temp_list[pos + i].length()>2)
+			if (!checkthis(temp_list[pos + i].substr(0, _pos_))|| temp_list[pos + i].substr(0, _pos_).length()>2)
 			{
 				return 1;
 			}
@@ -422,5 +422,32 @@ bool bus_system::check_string_to_busline(const string & check_string)
 			}
 	}
 	//检查首班车时间与末班车时间是否符号要求
+	return 0;
+}
+bool bus_system::check_file()
+{
+	ifstream bus_data_file;
+	bus_data_file.open(file_name, ios::in);
+	if (!bus_data_file.is_open())
+	{
+		char* cwd = _getcwd(NULL, 0);
+		cout << "未成功打开文件：" << cwd << "\\" << file_name << "\n请检查文件是否存在或请管理员增加路线以创建文件" << endl;
+		return 1;
+	}
+	while (!bus_data_file.eof())
+	{
+		string file_line = "";
+		getline(bus_data_file, file_line);
+		if (check_string_to_busline(file_line))
+		{
+			std::cout << "文件中出现错误格式的数据，内容读取失败，文件已自动清空\n";
+			bus_data_file.close();
+			ofstream bus_data_file;
+			bus_data_file.open(file_name, ios::out);
+			bus_data_file.close();
+			return 1;
+		}
+	}
+	bus_data_file.close();
 	return 0;
 }

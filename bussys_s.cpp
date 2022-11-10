@@ -23,6 +23,7 @@ bool bus_system::admin_menu()
 			std::cout << "1——新增线路" << std::endl;
 			std::cout << "2——删除线路" << std::endl;
 			std::cout << "3——修改线路" << std::endl;
+			std::cout << "q——退出程序" << std::endl;
 			std::cout << "请输入对应序号开始" << std::endl;//管理员菜单
 			delete[] all;
 		}
@@ -60,7 +61,7 @@ bool bus_system::admin_menu()
 						break;
 					}
 				}
-				std::cout << "是否继续查询[Y/N]\n";
+				std::cout << "是否继续新增路线[Y/N]\n";
 				std::string command;
 				while (true)
 				{
@@ -299,7 +300,7 @@ bool bus_system::user_menu()
 			std::cout << "0——管理员权限" << std::endl;
 			std::cout << "1——线路查询" << std::endl;
 			std::cout << "2——车次查询" << std::endl;
-			std::cout << "q——退出" << std::endl;
+			std::cout << "q——退出程序" << std::endl;
 			std::cout << "请输入对应序号开始" << std::endl;//普通用户菜单
 		}
 		getline(std::cin, a);
