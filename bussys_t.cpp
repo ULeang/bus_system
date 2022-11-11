@@ -410,18 +410,25 @@ bool bus_system::check_string_to_busline(const string & check_string)
 	//合法输入中pos中只能为偶数
 	for (int i = 1; i <3; i++)
 	{
-		int  _pos_ = 0;//储存':'所在位置
+		size_t  _pos_ = 0;//储存':'所在位置
 		_pos_ = temp_list[pos + i].find(':');
-			if (!checkthis(temp_list[pos + i].substr(0, _pos_))|| temp_list[pos + i].substr(0, _pos_).length()>2)
+		if (_pos_ == string::npos)
+		{
+			return 1;
+		}
+		else
+		{
+			if (!checkthis(temp_list[pos + i].substr(0, _pos_)) || temp_list[pos + i].substr(0, _pos_).length() > 2|| temp_list[pos + i].substr(0, _pos_).length()<1)
 			{
 				return 1;
 			}
-			if (!checkthis(temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_)) || temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_).length() > 2)
+			if (!checkthis(temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_)) || temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_).length() > 2|| temp_list[pos + i].substr(_pos_ + 1, temp_list[pos + i].length() - 1 - _pos_).length()<1)
 			{
 				return 1;
 			}
+		}		
 	}
-	//检查首班车时间与末班车时间是否符号要求
+	//检查首班车时间与末班车时间是否符合要求
 	return 0;
 }
 bool bus_system::check_file()
