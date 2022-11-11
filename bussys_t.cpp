@@ -13,36 +13,37 @@ bool bus_system::get_name_to_stop_list()
 	//	cout << "未成功打开文件：" << cwd<<"\\" << file_name << "\n请检查文件是否存在或请管理员增加路线以创建文件" << endl;
 	//	return 1;
 	//}
-	string temp;
+	string temp_stop_name;//临时储存站名
 	string p_flush;
 	while (!bus_data_file.eof())
 	{
-		bus_data_file >> temp;
-		if (temp == "#")
+		bus_data_file >> temp_stop_name;
+		if (temp_stop_name == "#")
 		{
-			getline(bus_data_file, p_flush);
+			getline(bus_data_file, p_flush);//读完站名将文件指针跳到下一行
 			if (bus_data_file.eof())
 			{
 				break;
 			}
-			bus_data_file >> temp;
+			bus_data_file >> temp_stop_name;//接收下一行线路名以移动文件指针
 		}
-		else if (temp.length() == 0)
+		else if (temp_stop_name.length() == 0)
 		{
 			break;
 		}
-		bus_data_file >> temp;
-		stop_list.push_back(bus_stop(temp, vector<int>()));
+		bus_data_file >> temp_stop_name;//这是确认temp_stop_name储存的为站名
+		stop_list.push_back(bus_stop(temp_stop_name, vector<int>()));
 		for (size_t i = 0; i < stop_list.size() - 1; i++)//去除重复
 		{
-			if (temp == stop_list[i].name)
+			if (temp_stop_name == stop_list[i].name)
 			{
 				stop_list.pop_back();
 				break;
 			}
 		}
+		//检查推入的bus_stop是否存在和之前的重名，有则推出stop_list
 	}
-	bus_data_file.close();//获取所有站点名称
+	bus_data_file.close();
 	return 0;
 }
 bool bus_system::creat_line_list()
@@ -65,8 +66,9 @@ bool bus_system::creat_line_list()
 	string temp_stop_name;
 	while (!bus_data_file.eof())
 	{
-		vector<int>stop_number;
-		vector<bus_line::time>estimated_time;
+		vector<int>stop_number;//储存该路线的所有站点序号
+		vector<bus_line::time>estimated_time;//储存该路线所有站与站直接的预估时间
+		
 		bus_data_file >> line_name;
 		if (bus_data_file.eof())
 		{
@@ -146,6 +148,7 @@ bool bus_system::creat_stop_list()
 			stop_list[number1].connect_to_number.push_back(number2);
 		}
 	}
+	//为每个bus_stop的connect_to_number赋值
 	return 0;
 }
 bool bus_system::write_bus_line_list()
@@ -265,7 +268,7 @@ bool bus_system::line_delete(const unsigned& u)
 	if (u < line_list.size())
 	{
 		vector<bus_line>::iterator it = line_list.begin() + u;
-		line_list.erase(it);
+		line_list.erase(it);//从line_list中删除对应bus_line
 	}
 	else
 	{
