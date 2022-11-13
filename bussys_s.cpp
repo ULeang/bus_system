@@ -108,6 +108,7 @@ bool bus_system::admin_menu()
 					{
 						if (checkthis(g))
 						{
+
 							size_t n = stoi(g);
 							if (n < line_list.size())
 							{
@@ -120,6 +121,10 @@ bool bus_system::admin_menu()
 								std::cout << "输入 r 返回管理员界面\n";
 								getline(std::cin, g);
 								std::cout << "==================\n";
+								if (g == "r")
+								{
+									break;
+								}
 							}
 						}
 						else
