@@ -69,6 +69,7 @@ private:
 public:
 	bus_system(const std::string& str = "bus_system.txt", bool ad = false) :file_name(str)
 	{
+		admin = ad;
 		if (!check_file())
 		{
 			get_name_to_stop_list();
