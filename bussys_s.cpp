@@ -108,7 +108,6 @@ bool bus_system::admin_menu()
 					{
 						if (checkthis(g))
 						{
-
 							size_t n = stoi(g);
 							if (n < line_list.size())
 							{
@@ -193,7 +192,7 @@ bool bus_system::admin_menu()
 							size_t m = stoi(h);
 							if (m > line_list.size() - 1)
 							{
-								std::cout<< "输入的序号超出范围，请重新输入\n";
+								std::cout << "输入的序号超出范围，请重新输入\n";
 								getline(std::cin, h);
 								std::cout << "==================\n";
 							}
@@ -335,7 +334,7 @@ bool bus_system::user_menu()
 				int b = line_query(start, end, str1);
 				if (b == -2)
 				{
-					std::cout << "始末点相同，禁止如蜜传如蜜" << std::endl;
+					std::cout << "始末点相同,错误输入" << std::endl;
 				}
 				else if (b == -1)
 				{
@@ -446,8 +445,21 @@ bool bus_system::user_menu()
 				getline(std::cin, e);
 				if (e == "y" || e == "Y")
 				{
-					switch_privilege();
-					return 1;
+					std::string password;
+					std::cout << "请输入管理员密码" << std::endl;
+					getline(std::cin, password);
+					if (password == "123456")
+					{
+						switch_privilege();
+						return 1;
+					}
+					else
+					{
+						std::cout << "密码错误，已为您返回用户界面\n";
+						std::cout << "==================\n";
+						flag = 1;
+						break;
+					}
 				}
 				else if (e == "n" || e == "N")
 				{
