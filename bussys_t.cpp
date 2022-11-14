@@ -13,7 +13,9 @@ bool bus_system::get_name_to_stop_list()
 	//	cout << "未成功打开文件：" << cwd<<"\\" << file_name << "\n请检查文件是否存在或请管理员增加路线以创建文件" << endl;
 	//	return 1;
 	//}
-	string temp_stop_name;//临时储存站名
+	
+	//临时储存站名
+	string temp_stop_name;
 	string p_flush;
 	while (!bus_data_file.eof())
 	{
@@ -26,12 +28,16 @@ bool bus_system::get_name_to_stop_list()
 				break;
 			}
 			bus_data_file >> temp_stop_name;//接收下一行线路名以移动文件指针
+			if (bus_data_file.eof())
+			{
+				break;
+			}
 		}
 		else if (temp_stop_name.length() == 0)
 		{
 			break;
 		}
-		bus_data_file >> temp_stop_name;//这是确认temp_stop_name储存的为站名
+		bus_data_file >> temp_stop_name;//这时确认temp_stop_name储存的为站名
 		stop_list.push_back(bus_stop(temp_stop_name, vector<int>()));
 		for (size_t i = 0; i < stop_list.size() - 1; i++)//去除重复
 		{
@@ -198,7 +204,8 @@ bool bus_system::read_string_to_bus_line_add(const string& li, bus_line*& p)
 			}
 		}
 	}
-	for (size_t i = 1; i < temp_list.size() - 3; i += 2)//修改stop_list;
+	//修改stop_list;
+	for (size_t i = 1; i < temp_list.size() - 3; i += 2)
 	{
 		stop_list.push_back(bus_stop(temp_list[i], vector<int>()));
 		for (size_t j = 0; j < stop_list.size() - 1; j++)//去除重复
@@ -448,6 +455,10 @@ bool bus_system::check_file()
 	{
 		string file_line = "";
 		getline(bus_data_file, file_line);
+		if (bus_data_file.eof())
+		{
+			break;
+		}
 		if (check_string_to_busline(file_line))
 		{
 			std::cout << "文件中出现错误格式的数据，内容读取失败，文件已自动清空\n";
