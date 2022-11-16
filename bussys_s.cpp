@@ -1,9 +1,9 @@
 #include "bussys.h"
-//#include<Windows.h>
+#include<Windows.h>
 using std::getline;
 bool bus_system::admin_menu()
 {
-	//bool i;
+	system("cls");
 	bool flag = 1;//判断是否重新显示路线
 	std::cout << "========================" << std::endl;
 	std::cout << "Hello,admin!欢迎进入管理菜单" << std::endl;
@@ -34,6 +34,7 @@ bool bus_system::admin_menu()
 		{
 			while (true)
 			{
+				system("cls");
 				std::cout << "输入 r 返回管理员界面\n";
 				std::string addli;
 				std::cout << "请输入新增线路" << std::endl;
@@ -41,23 +42,27 @@ bool bus_system::admin_menu()
 				std::cout << "==================\n";
 				if (addli == "r")
 				{
+					system("cls");
 					break;
 				}
 				else
 				{
 					while (check_string_to_busline(addli) || line_add(addli))//没有错误时不执行该循环
 					{
+						system("cls");
 						std::cout << "与原有路线重名或格式错误,请重试\n";
 						std::cout << "输入 r 返回管理员界面\n";
 						getline(std::cin, addli);
 						std::cout << "==================\n";
 						if (addli == "r")
 						{
+							system("cls");
 							break;
 						}
 					}
 					if (addli == "r")
 					{
+						system("cls");
 						break;
 					}
 				}
@@ -68,20 +73,24 @@ bool bus_system::admin_menu()
 					getline(std::cin, command);
 					if (command == "y" || command == "Y")
 					{
+						system("cls");
 						break;
 					}
 					else if (command == "n" || command == "N")
 					{
+						system("cls");
 						break;
 					}
 					else
 					{
+
 						std::cout << "错误的输入,请重新输入\n";
 						std::cout << "==================\n";
 					}
 				}
 				if (command == "n" || command == "N")
 				{
+					system("cls");
 					break;
 				}
 
@@ -122,6 +131,7 @@ bool bus_system::admin_menu()
 								std::cout << "==================\n";
 								if (g == "r")
 								{
+									system("cls");
 									break;
 								}
 							}
@@ -134,12 +144,14 @@ bool bus_system::admin_menu()
 							std::cout << "==================\n";
 							if (g == "r")
 							{
+								system("cls");
 								break;
 							}
 						}
 					}
 					if (g == "r")
 					{
+						system("cls");
 						break;
 					}
 				}
@@ -154,6 +166,7 @@ bool bus_system::admin_menu()
 					}
 					else if (command == "n" || command == "N")
 					{
+						system("cls");
 						break;
 					}
 					else
@@ -164,6 +177,7 @@ bool bus_system::admin_menu()
 				}
 				if (command == "n" || command == "N")
 				{
+					system("cls");
 					break;
 				}
 			}
@@ -198,6 +212,7 @@ bool bus_system::admin_menu()
 							}
 							else
 							{
+
 								std::cout << "输入修改后的线路" << std::endl;
 								std::cout << "输入 r 返回管理员界面\n";
 								std::cout << "输入p重新输入修改路线序号\n";
@@ -233,12 +248,17 @@ bool bus_system::admin_menu()
 						{
 							std::cout << "错误的输入,请重试\n";
 							getline(std::cin, h);
+							if (h == "r")
+							{
+								break;
+							}
 							std::cout << "==================\n";
 						}
 					}
 				}
-				if (newli == "r")
+				if (newli == "r" || newli == "")
 				{
+					system("cls");
 					break;
 				}
 				if (newli != "p")
@@ -264,6 +284,7 @@ bool bus_system::admin_menu()
 					}
 					if (command == "n" || command == "N")
 					{
+						system("cls");
 						break;
 					}
 				}
@@ -272,8 +293,8 @@ bool bus_system::admin_menu()
 		}
 		else if (f == "q")
 		{
+			system("cls");
 			std::cout << "已退出\n";
-			//std::system("pause");
 			return 0;
 		}
 		else if (f == "0")
@@ -293,6 +314,7 @@ bool bus_system::admin_menu()
 }
 bool bus_system::user_menu()
 {
+	system("cls");
 	std::cout << "Welcome to our automated bus route selection system!欢迎来到查询系统！" << std::endl;
 	std::cout << "==================\n";
 	std::string a;
@@ -311,6 +333,7 @@ bool bus_system::user_menu()
 		std::cout << "==================\n";
 		if (a == "1")//线路查询
 		{
+			system("cls");
 			while (true)
 			{
 				std::string start;
@@ -321,6 +344,7 @@ bool bus_system::user_menu()
 				getline(std::cin, start);
 				if (start == "r")
 				{
+					system("cls");
 					break;
 				}
 				std::cout << "-------------------\n";
@@ -329,6 +353,7 @@ bool bus_system::user_menu()
 				getline(std::cin, end);
 				if (end == "r")
 				{
+					system("cls");
 					break;
 				}
 				int b = line_query(start, end, str1);
@@ -346,17 +371,15 @@ bool bus_system::user_menu()
 				}
 				else if (b == 1)
 				{
-					std::cout << "换乘最少线路与站数最少路线相同,如下" << std::endl;
+					std::cout << "换乘次数最少线路与站数最少路线相同,如下" << std::endl;
 					std::cout << str1[0] << std::endl;
 				}
 				else if (b == 2)
 				{
-					std::cout << "换乘最少线路与站数最少路线不同,如下" << std::endl;
+					std::cout << "换乘次数最少线路与站数最少路线不同,如下" << std::endl;
 					std::cout << str1[0] << std::endl;
 					std::cout << str1[1] << std::endl;
 				}
-
-				//system("pause");
 				std::cout << "是否重新查询[Y/N]\n";
 				std::string command;
 				while (true)
@@ -364,10 +387,12 @@ bool bus_system::user_menu()
 					getline(std::cin, command);
 					if (command == "y" || command == "Y")
 					{
+						system("cls");
 						break;
 					}
 					else if (command == "n" || command == "N")
 					{
+						system("cls");
 						break;
 					}
 					else
@@ -378,6 +403,7 @@ bool bus_system::user_menu()
 				}
 				if (command == "n" || command == "N")
 				{
+					system("cls");
 					break;
 				}
 			}
@@ -387,6 +413,7 @@ bool bus_system::user_menu()
 		{
 			while (true)
 			{
+				system("cls");
 				std::cout << "请输入需要查询的公交车次" << std::endl;
 				std::cout << "输入 r 退出查询\n";
 				std::string line1;
@@ -395,6 +422,7 @@ bool bus_system::user_menu()
 				std::cout << "==================\n";
 				if (line1 == "r")
 				{
+					system("cls");
 					break;
 				}
 				int d = line_showsingle(line1, &str2);
@@ -415,10 +443,12 @@ bool bus_system::user_menu()
 					std::cout << "==================\n";
 					if (command == "y" || command == "Y")
 					{
+						system("cls");
 						break;
 					}
 					else if (command == "n" || command == "N")
 					{
+						system("cls");
 						break;
 					}
 					else
@@ -429,6 +459,7 @@ bool bus_system::user_menu()
 				}
 				if (command == "n" || command == "N")
 				{
+					system("cls");
 					break;
 				}
 				flag = 1;
@@ -436,6 +467,7 @@ bool bus_system::user_menu()
 		}
 		else if (a == "0")//管理员权限
 		{
+			system("cls");
 			std::cout << "当前权限为" << std::endl;
 			std::cout << (admin ? "管理员" : "普通用户") << std::endl;
 			std::string e;
@@ -445,6 +477,7 @@ bool bus_system::user_menu()
 				getline(std::cin, e);
 				if (e == "y" || e == "Y")
 				{
+					system("cls");
 					std::string password;
 					std::cout << "请输入管理员密码" << std::endl;
 					getline(std::cin, password);
@@ -455,6 +488,7 @@ bool bus_system::user_menu()
 					}
 					else
 					{
+						system("cls");
 						std::cout << "密码错误，已为您返回用户界面\n";
 						std::cout << "==================\n";
 						flag = 1;
@@ -463,6 +497,7 @@ bool bus_system::user_menu()
 				}
 				else if (e == "n" || e == "N")
 				{
+					system("cls");
 					flag = 1;
 					break;
 				}
@@ -475,8 +510,8 @@ bool bus_system::user_menu()
 		}
 		else if (a == "q")
 		{
+			system("cls");
 			std::cout << "已退出\n";
-			//system("pause >nul");
 			return 0;
 		}
 		else
@@ -512,7 +547,6 @@ bool bus_system::checkthis(const std::string& g)
 	{
 		if (int(g[i]) < 48 || int(g[i]) > 57)
 		{
-			//std::cout << "错误的输入,请重试\n";
 			return false;
 		}
 	}
