@@ -52,9 +52,9 @@ int bus_system::line_query(const std::string& start, const std::string& end, std
 
 	All_line al; Line li;
 	find_end(st, ed, al, li);
+	stop_list[st].found = false;
 	if (al.size() == 0)
 		return 0;
-	stop_list[st].found = false;
 
 	//»»³Ë×îÉÙ
 	int subscript_t = -1, transfer_num = 65535;
